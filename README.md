@@ -32,3 +32,10 @@ git clone https://github.com/dhvanityadav/Web-Research-Tool-RAG
 cd Web-Research-Tool-RAG
 pip install -r requirements.txt
 streamlit run main.py
+```
+## 📌 Use Case
+- News research
+- Market analysis
+- Competitive intelligence
+- Academic research
+
