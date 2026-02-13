@@ -37,7 +37,7 @@ def chains(query):
         search_kwargs = {"k" : 5}
     )
 
-    llm = ChatGoogleGenerativeAI(model = "gemini-2.5-flash-lite", temperature = 0.5)
+    llm = ChatGoogleGenerativeAI(model = "gemini-2.0-flash-lite-001", temperature = 0.5)
 
     compressor = LLMChainExtractor.from_llm(llm)
 
@@ -79,6 +79,8 @@ with st.sidebar:
 
     if "url_count" not in st.session_state:
         st.session_state.url_count = 1
+    if "processed" not in st.session_state:
+        st.session_state.processed = False
 
     def add_url():
         st.session_state.url_count +=1
@@ -128,13 +130,23 @@ with st.sidebar:
                 )
 
                 # save vectorstore in local
+                if not os.path.exists("WEB_RESEARCH_PROJECT"):
+                    os.makedirs("WEB_RESEARCH_PROJECT")
                 vectorstore.save_local("WEB_RESEARCH_PROJECT/faiss_index")
 
+                st.session_state.processed = True
                 st.success("Process Has been DONE")
+# shows the question box only if we saved index or processed any one
+if st.session_state or os.path.exists("WEB_RESEARCH_PROJECT/faiss_index"):
+    query = st.text_input("Question: ")
 
-query = st.text_input("Question: ")
+    if query: 
+        with st.spinner("Searching for answer..."):
+            result = chains(query)
+            st.write(result)
+else:
+    st.info("Please add URLs and Click on 'Load URLs' Button")
 
-if query:
-    st.write(chains(query))
+
 
         
