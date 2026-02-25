@@ -38,4 +38,5 @@ streamlit run main.py
 - Market analysis
 - Competitive intelligence
 - Academic research
+- Deep Research
 
